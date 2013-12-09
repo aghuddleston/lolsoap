@@ -227,7 +227,7 @@ module LolSoap
       }
     end
 
-    def prefix_and_name(prefixed_name, default_namespace = nil)
+    def prefix_and_name(prefixed_name, default_namespace = target_namespace)
       prefix, name = prefixed_name.to_s.split(':')
 
       if name
@@ -239,6 +239,10 @@ module LolSoap
       end
 
       [prefix, name]
+    end
+
+    def target_namespace
+      @target_namespace ||= doc.at_xpath('/d:definitions/@targetNamespace', ns).to_s
     end
 
     def each_node(xpath)
