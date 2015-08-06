@@ -265,12 +265,18 @@ module LolSoap
     end
 
     def namespace_and_name(node, prefixed_name, default_namespace = nil)
-      if prefixed_name.include? ':'
-        prefix, name = prefixed_name.split(':')
+      if prefixed_name.nil?
+        prefix = node.namespace.prefix
         namespace = node.namespaces.fetch("xmlns:#{prefix}")
+        name = node.name
       else
-        name      = prefixed_name
-        namespace = default_namespace
+         if prefixed_name.include? ':'
+          prefix, name = prefixed_name.split(':')
+          namespace = node.namespaces.fetch("xmlns:#{prefix}")
+        else
+          name      = prefixed_name
+          namespace = default_namespace
+        end
       end
 
       [namespace, name]
@@ -287,4 +293,3 @@ module LolSoap
     end
   end
 end
-
